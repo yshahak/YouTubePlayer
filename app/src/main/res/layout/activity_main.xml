@@ -18,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:layout_scrollFlags="scroll|enterAlways">
 
             <ImageView
                 android:id="@+id/btn_drop_down"
@@ -45,6 +46,43 @@
 
 
         </android.support.v7.widget.Toolbar>
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/searchview"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:padding="2dp"
+            android:focusable="false"
+            android:layout_gravity="center_horizontal"
+            fontPath="fonts/MyriadPro-Regular.otf"
+            tools:ignore="MissingPrefix"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@drawable/search_bar"
+            app:queryHint="@string/hint_search"
+            app:searchIcon="@drawable/search_icon"
+            app:layout_scrollFlags="scroll|enterAlways"/>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/sliding_tabs"
+            style="@style/MyCustomTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <!--add height and width to TabItem -->
+            <android.support.design.widget.TabItem
+                android:layout_height="wrap_content"
+                android:layout="@layout/tab_home"
+                android:layout_width="match_parent"/>
+
+            <!--add height and width to TabItem -->
+            <android.support.design.widget.TabItem
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout="@layout/tab_playlist"/>
+
+        </android.support.design.widget.TabLayout>
+
 
     </android.support.design.widget.AppBarLayout>
 

@@ -1,12 +1,10 @@
 package pro.myvideos.youtubeplayer.data;
 
 
-import android.util.Log;
-
 import java.text.DecimalFormat;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class SearchVideoHelper {
+public class VideoData {
 
     public static final int DEL_ACTION_PLAYLIST = 0;
     public static final int DEL_ACTION_HISTORY = 1;
@@ -29,7 +27,7 @@ public class SearchVideoHelper {
         this.playlistName = playlistName;
     }
 
-    public SearchVideoHelper() {
+    public VideoData() {
 
     }
 
@@ -79,7 +77,6 @@ public class SearchVideoHelper {
     }
 
     public void setChannelTitle(String channelTitle) {
-        Log.d("TAG", title);
         this.channelTitle = channelTitle;
     }
 

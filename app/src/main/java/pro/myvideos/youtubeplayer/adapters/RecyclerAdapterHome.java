@@ -11,11 +11,13 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import pro.myvideos.youtubeplayer.R;
-import pro.myvideos.youtubeplayer.data.SearchVideoHelper;
+import pro.myvideos.youtubeplayer.data.VideoData;
+import pro.myvideos.youtubeplayer.fragments.TabHomeFragment;
 
 /**
  * Created by B.E.L on 06/11/2016.
@@ -23,11 +25,12 @@ import pro.myvideos.youtubeplayer.data.SearchVideoHelper;
 
 public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHome.Holder> {
 
+    private static final String BY = "by ";
     private final String viewsFormatter;
-    private SearchVideoHelper[] videos;
+    private VideoData[] videos;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM d, yyyy", Locale.US);
 
-    public RecyclerAdapterHome(SearchVideoHelper[] videos, Context context) {
+    public RecyclerAdapterHome(VideoData[] videos, Context context) {
         this.videos = videos;
         this.viewsFormatter = context.getString(R.string.view_count_formatter);
     }
@@ -39,15 +42,32 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        SearchVideoHelper searchVideoHelper = videos[position];
+        VideoData videoData = videos[position];
         Picasso.with(holder.itemView.getContext())
-                .load(Uri.parse(searchVideoHelper.getImg_src()))
+                .load(Uri.parse(videoData.getImg_src()))
                 .fit()
                 .into(holder.videoThumbnail);
-        holder.videoTitle.setText(searchVideoHelper.getTitle());
-        holder.videoViewCount.setText(String.format(viewsFormatter, searchVideoHelper.getCountViews()));
-        holder.videoPublishAt.setText(searchVideoHelper.getPublished().substring(0, 10));
-        holder.videoPublisher.setText(searchVideoHelper.getChannelTitle());
+        holder.videoTitle.setText(videoData.getTitle());
+        holder.videoViewCount.setText(String.format(viewsFormatter, videoData.getCountViews()));
+        holder.videoPublishAt.setText(videoData.getPublished().substring(0, 10));
+        holder.videoPublisher.setText(BY + videoData.getChannelTitle());
+        holder.like.setText(formatNumberExample(videoData.getLikes()));
+        holder.dislike.setText(formatNumberExample(videoData.getDislikes()));
+        holder.videoThumbnail.setTag(R.string.tag_video_data, videoData);
+    }
+
+    private static char[] suffix = {' ', 'k', 'M', 'B', 'T', 'P', 'E'};
+    private static DecimalFormat formatSmall = new DecimalFormat("#0");
+    private static DecimalFormat formatBig = new DecimalFormat("#,##0");
+
+    public static String formatNumberExample(Long numValue) {
+        int value = (int) Math.floor(Math.log10(numValue));
+        int base = value / 3;
+        if (value >= 3 && base < suffix.length) {
+            return formatSmall.format(numValue / Math.pow(10, base * 3)) + suffix[base];
+        } else {
+            return formatBig.format(numValue);
+        }
     }
 
     @Override
@@ -55,21 +75,36 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
         return videos.length;
     }
 
-    class Holder extends RecyclerView.ViewHolder {
+    class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView videoThumbnail;
         TextView videoTitle;
         TextView videoViewCount;
         TextView videoPublisher;
         TextView videoPublishAt;
+        TextView like, dislike;
 
-        public Holder(View itemView) {
+        Holder(View itemView) {
             super(itemView);
             videoThumbnail = (ImageView)itemView.findViewById(R.id.video_thumbnail);
+            videoThumbnail.setOnClickListener(this);
             videoTitle = (TextView)itemView.findViewById(R.id.video_title);
             videoViewCount = (TextView)itemView.findViewById(R.id.video_view_count);
             videoPublisher = (TextView)itemView.findViewById(R.id.video_publisher);
             videoPublishAt = (TextView)itemView.findViewById(R.id.video_publish_at);
+            like = (TextView)itemView.findViewById(R.id.video_like);
+            dislike = (TextView)itemView.findViewById(R.id.video_dislike);
         }
+
+        @Override
+        public void onClick(View view) {
+            VideoData videoData = (VideoData) videoThumbnail.getTag(R.string.tag_video_data);
+            if (videoData != null) {
+                TabHomeFragment.playVideoInFragment(videoData.getId());
+            }
+        }
+
     }
+
+
 }

@@ -26,7 +26,7 @@ public class Helper {
 
             if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 //Log.d("my", "HTTP_OK");
-                SearchVideoTask.CONNECTION_STATUS = true;
+//                SearchVideoTask.CONNECTION_STATUS = true;
             } else {
                 Log.d("my", "ResponseCode: " + urlConnection.getResponseCode());
                 return null;
@@ -53,7 +53,7 @@ public class Helper {
 
         } catch (IOException e) {
             Log.e("my", "IOException Error " + e.toString(), e);
-            SearchVideoTask.CONNECTION_STATUS = false;
+//            SearchVideoTask.CONNECTION_STATUS = false;
             // If the code didn't successfully get the  data.
             return null;
         } finally {

@@ -16,43 +16,10 @@
     tools:context="pro.myvideos.youtubeplayer.activities.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <android.support.v7.widget.SearchView
-        android:id="@+id/searchview"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:padding="2dp"
-        android:focusable="false"
-        android:layout_gravity="center_horizontal"
-        fontPath="fonts/MyriadPro-Regular.otf"
-        tools:ignore="MissingPrefix"
-        app:iconifiedByDefault="false"
-        app:queryBackground="@drawable/search_bar"
-        app:queryHint="@string/hint_search"
-        app:searchIcon="@drawable/search_icon"/>
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/sliding_tabs"
-        style="@style/MyCustomTabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <!--add height and width to TabItem -->
-        <android.support.design.widget.TabItem
-            android:layout_height="wrap_content"
-            android:layout="@layout/tab_home"
-            android:layout_width="match_parent"/>
-
-        <!--add height and width to TabItem -->
-        <android.support.design.widget.TabItem
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:layout="@layout/tab_playlist"/>
-
-    </android.support.design.widget.TabLayout>
-
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </LinearLayout>

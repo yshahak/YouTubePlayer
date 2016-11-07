@@ -8,6 +8,6 @@
     android:drawablePadding="8dp"
     android:textSize="16sp"
     android:text="Home"
-    android:drawableLeft="@drawable/playlist_create_button">
+    android:drawableLeft="@drawable/home">
 
 </TextView>

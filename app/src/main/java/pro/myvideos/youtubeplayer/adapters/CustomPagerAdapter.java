@@ -4,7 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import pro.myvideos.youtubeplayer.fragments.TabFragment;
+import pro.myvideos.youtubeplayer.fragments.TabHomeFragment;
+import pro.myvideos.youtubeplayer.fragments.TabPlaylistFragment;
 
 /**
  * Created by B.E.L on 06/11/2016.
@@ -18,12 +19,12 @@ public class CustomPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return TabFragment.newInstance(position);
+        return  position == 0 ? TabHomeFragment.newInstance() : TabPlaylistFragment.newInstance();
     }
 
     @Override
     public int getCount() {
-        return 1;
+        return 2;
     }
 
 
