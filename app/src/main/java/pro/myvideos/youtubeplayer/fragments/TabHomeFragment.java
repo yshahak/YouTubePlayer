@@ -3,7 +3,6 @@ package pro.myvideos.youtubeplayer.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -33,6 +33,7 @@ public class TabHomeFragment extends Fragment implements LoaderManager.LoaderCal
 
     private static final String KEY_IS_PLAYING = "keyIsPlaying";
     private RecyclerView recyclerView;
+    private LinearLayout playerContainer;
     private static WeakReference<Fragment> weakFragment;
     private static YouTubePlayer youTubePlayer;
 
@@ -53,28 +54,29 @@ public class TabHomeFragment extends Fragment implements LoaderManager.LoaderCal
         recyclerView = (RecyclerView) viewGroup.findViewById(R.id.recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
+        playerContainer = (LinearLayout)viewGroup.findViewById(R.id.player_container);
         getLoaderManager().initLoader(0, null, TabHomeFragment.this);
 
         YouTubePlayerSupportFragment youTubePlayerFragment =
                 (YouTubePlayerSupportFragment) getChildFragmentManager().findFragmentById(R.id.youtube_fragment);
         youTubePlayerFragment.initialize(DataManager.YOUTUBE_DATA_API_KEY, this);
 
-        weakFragment = new WeakReference<Fragment>(youTubePlayerFragment);
-        if (savedInstanceState == null | (savedInstanceState != null && !savedInstanceState.getBoolean(KEY_IS_PLAYING))) {
-            hideFragment();
-        }
+        weakFragment = new WeakReference<Fragment>(this);
+//        if (savedInstanceState == null | (savedInstanceState != null && !savedInstanceState.getBoolean(KEY_IS_PLAYING))) {
+//            hideFragment();
+//        }
 
         return viewGroup;
     }
 
     public static void hideFragment(){
-        final Fragment fragment = weakFragment.get();
-        if (fragment != null) {
-            FragmentTransaction ft = fragment.getChildFragmentManager().beginTransaction();
-            ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-            ft.hide(fragment);
-            ft.commit();
-        }
+//        final Fragment fragment = weakFragment.get();
+//        if (fragment != null) {
+//            FragmentTransaction ft = fragment.getChildFragmentManager().beginTransaction();
+//            ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+//            ft.hide(fragment);
+//            ft.commit();
+//        }
     }
 
     @Override
@@ -87,10 +89,11 @@ public class TabHomeFragment extends Fragment implements LoaderManager.LoaderCal
         final Fragment fragment = weakFragment.get();
         if (fragment != null && youTubePlayer != null) {
             youTubePlayer.loadVideo(videoId);
-            FragmentTransaction ft = fragment.getChildFragmentManager().beginTransaction();
-            ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-            ft.show(fragment);
-            ft.commit();
+
+//            FragmentTransaction ft = fragment.getChildFragmentManager().beginTransaction();
+//            ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+//            ft.show(fragment);
+//            ft.commit();
 
         }
 
