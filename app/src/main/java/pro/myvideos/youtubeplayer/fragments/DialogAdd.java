@@ -15,9 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import pro.myvideos.youtubeplayer.R;
+import pro.myvideos.youtubeplayer.activities.MainActivity;
+import pro.myvideos.youtubeplayer.data.Playlist;
+import pro.myvideos.youtubeplayer.data.VideoData;
 
 /**
  * Created by yshah on 11/7/2016.
@@ -25,58 +27,36 @@ import pro.myvideos.youtubeplayer.R;
 
 public class DialogAdd extends DialogFragment {
 
-    private static final int ITEM_FAVORITES = 0;
-    private static final int ITEM_NEW_PLAYLIST = 1;
-    private List<String> items;
+    private static final int ITEM_NEW_PLAYLIST = 0;
+    private static final int ITEM_ELSE = 1;
+    public static VideoData playedVideo;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        items = new ArrayList<>();
-        items.add("Crete new playlist");
-        items.add("playlist 1");
+
         ArrayList<Row> list = new ArrayList<>();
         list.add(new Row("Crete new playlist", R.drawable.createplaylist_pop_icon));
-        list.add(new Row("playlist 1", R.drawable.playlist_pop_exist_icon));
+        for (Playlist playlist : MainActivity.playlists){
+            list.add(new Row(playlist.getPlaylistName(), R.drawable.playlist_pop_exist_icon));
+        }
 
-        loadPlaylists();
-        String[] itemsString = items.toArray(new String[items.size()]);
         ArrayAdapter<Row> simpleAdapter = new MyAdapter(getActivity(), list);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.dialog_add)
                 .setAdapter(simpleAdapter, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
-                            case ITEM_FAVORITES:
-//                                addToFavorite();
-                                break;
                             case ITEM_NEW_PLAYLIST:
                                 DialogFragment newDialog = new DialogAddCustomPlaylist();
-//                                 TODO Should be support fragment manager or not?
+                                DialogAddCustomPlaylist.playedVideo = playedVideo;
                                 newDialog.show(getFragmentManager(), "");
                                 break;
                             default:
-//                                addVideoToExistingList(items.get(which));
+                                addVideoToExistingList(which);
                                 break;
                         }
                     }
                 });
-//                .setItems(itemsString, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        switch (which) {
-//                            case ITEM_FAVORITES:
-////                                addToFavorite();
-//                                break;
-//                            case ITEM_NEW_PLAYLIST:
-////                                DialogFragment newDialog = new DialogAddCustomPlaylist();
-//                                // TODO Should be support fragment manager or not?
-////                                newDialog.show(getFragmentManager(), "");
-//                                break;
-//                            default:
-////                                addVideoToExistingList(items.get(which));
-//                                break;
-//                        }
-//                    }
-//                });
         return builder.create();
     }
 
@@ -84,7 +64,7 @@ public class DialogAdd extends DialogFragment {
         String row;
         int res;
 
-        public Row(String row, int res) {
+        Row(String row, int res) {
             this.row = row;
             this.res = res;
         }
@@ -94,7 +74,7 @@ public class DialogAdd extends DialogFragment {
 
         private ArrayList<Row> arrayList;
 
-        public MyAdapter(Context context, ArrayList<Row> list) {
+        MyAdapter(Context context, ArrayList<Row> list) {
             super(context, R.layout.row_playlist_popup, list);
             this.arrayList = list;
         }
@@ -118,23 +98,10 @@ public class DialogAdd extends DialogFragment {
     }
 
 
-    private void loadPlaylists() {
 
-//        SharedPreferences playlists = getActivity().getSharedPreferences(ShPref.FILE_PLAY_LISTS, Context.MODE_PRIVATE);
-//        int count = playlists.getInt("count", 0);
-//        String tempString;
-//        if (count > 0) {
-//            for (int i = 0; i < count; i++) {
-//                tempString = playlists.getString("name" + i, "");
-//                if (tempString.length() > 0) {
-//                    items.add(tempString);
-//                }
-//            }
-//        }
+    private void addVideoToExistingList(int selectedList) {
+        Playlist playlist = MainActivity.playlists.get(--selectedList);
+        playlist.getVideos().add(playedVideo);
+        ((MainActivity)getActivity()).saveAndUpdate();
     }
-
-//    private void addVideoToExistingList(String selectedList) {
-//        int realPosition = ShPref.getRealPlaylistPositionByString(getActivity(), selectedList);
-//        ShPref.addVideoToPlaylist(getActivity(), realPosition, mDataset);
-//    }
 }

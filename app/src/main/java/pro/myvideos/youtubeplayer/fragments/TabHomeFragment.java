@@ -45,6 +45,8 @@ public class TabHomeFragment extends Fragment implements LoaderManager.LoaderCal
     private TextView videoPublisher;
     private TextView videoPublishAt;
     private TextView like, dislike;
+    private VideoData playedVideo;
+
     public static TabHomeFragment newInstance(){
         return new TabHomeFragment();
     }
@@ -74,7 +76,8 @@ public class TabHomeFragment extends Fragment implements LoaderManager.LoaderCal
         YouTubePlayerSupportFragment youTubePlayerFragment =
                 (YouTubePlayerSupportFragment) getChildFragmentManager().findFragmentById(R.id.youtube_fragment);
         youTubePlayerFragment.initialize(DataManager.YOUTUBE_DATA_API_KEY, this);
-        viewGroup.findViewById(R.id.icon_playlist).setOnClickListener(playlistClickListener);
+        View iconPlaylist = viewGroup.findViewById(R.id.icon_playlist);
+        iconPlaylist.setOnClickListener(playlistClickListener);
         return viewGroup;
     }
 
@@ -91,6 +94,7 @@ public class TabHomeFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     public void playVideoInFragment(VideoData videoData){
+        this.playedVideo = videoData;
         if (youTubePlayer != null) {
             youTubePlayer.loadVideo(videoData.getId());
             playerContainer.setVisibility(View.VISIBLE);
@@ -105,22 +109,13 @@ public class TabHomeFragment extends Fragment implements LoaderManager.LoaderCal
 
     }
 
-    public void showPopup(View anchoer) {
-//        DroppyMenuPopup.Builder droppyBuilder = new DroppyMenuPopup.Builder(getActivity(), videoViewCount);
-//// Add Item with icon
-//        droppyBuilder.addMenuItem(new DroppyMenuItem("CREATE NEW PLAYLIST", R.drawable.createplaylist_pop_icon));
-//        droppyBuilder.addMenuItem(new DroppyMenuItem("CREATE SECOND PLAYLIST", R.drawable.playlist_pop_exist_icon));
-//
-//        DroppyMenuPopup droppyMenu = droppyBuilder.build();
-//        droppyMenu.show();
-        DialogFragment dialog = new DialogAdd();
-        dialog.show(getActivity().getSupportFragmentManager(), "");
-    }
 
     private View.OnClickListener playlistClickListener= new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            showPopup(view);
+            DialogFragment dialog = new DialogAdd();
+            DialogAdd.playedVideo = playedVideo;
+            dialog.show(getActivity().getSupportFragmentManager(), "");
         }
     };
 

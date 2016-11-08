@@ -11,6 +11,14 @@ public class Playlist {
     private String playlistName;
     private ArrayList<VideoData> videos;
 
+    public Playlist(String playlistName, VideoData video) {
+        this(playlistName);
+        if (video != null) {
+            this.videos.add(video);
+        }
+
+    }
+
     public Playlist(String playlistName) {
         this.playlistName = playlistName;
         this.videos = new ArrayList<>();

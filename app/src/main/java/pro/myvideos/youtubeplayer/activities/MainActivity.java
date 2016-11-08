@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private SearchView searchView;
     public static ArrayList<Playlist> playlists;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,4 +93,16 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             }
         }
     }
+
+    public void saveAndUpdate() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                VideoData.save(getApplicationContext(), playlists);
+            }
+        }).start();
+        myViewPager.getAdapter().notifyDataSetChanged();
+    }
+
+
 }
