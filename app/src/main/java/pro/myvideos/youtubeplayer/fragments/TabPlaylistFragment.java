@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import pro.myvideos.youtubeplayer.adapters.RecyclerAdapterPlaylist;
+
 /**
  * Created by B.E.L on 06/11/2016.
  */
@@ -27,6 +29,7 @@ public class TabPlaylistFragment extends Fragment{
         recyclerView = new RecyclerView(getContext());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(new RecyclerAdapterPlaylist(getContext()));
         return recyclerView;
     }
 }

@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@color/colorPrimary"
         android:visibility="gone">
 
         <fragment
@@ -17,7 +18,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <include layout="@layout/video_details"/>
+        <ImageView
+            android:id="@+id/icon_playlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:src="@drawable/createplaylist_pop_icon"
+            android:padding="8dp"/>
+
+        <include layout="@layout/video_details" />
 
 
     </LinearLayout>

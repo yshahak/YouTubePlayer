@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -25,14 +26,18 @@ import pro.myvideos.youtubeplayer.fragments.TabHomeFragment;
 
 public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHome.Holder> {
 
-    private static final String BY = "by ";
-    private final String viewsFormatter;
+    public static final String BY = "by ";
+    public static String viewsFormatter;
     private VideoData[] videos;
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM d, yyyy", Locale.US);
+    public SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM d, yyyy", Locale.US);
+    private WeakReference<TabHomeFragment> weakFragment;
 
-    public RecyclerAdapterHome(VideoData[] videos, Context context) {
+
+    public RecyclerAdapterHome(VideoData[] videos,TabHomeFragment tabHomeFragment, Context context) {
         this.videos = videos;
-        this.viewsFormatter = context.getString(R.string.view_count_formatter);
+        viewsFormatter = context.getString(R.string.view_count_formatter);
+        weakFragment = new WeakReference<>(tabHomeFragment);
+
     }
 
     @Override
@@ -57,8 +62,8 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
     }
 
     private static char[] suffix = {' ', 'k', 'M', 'B', 'T', 'P', 'E'};
-    private static DecimalFormat formatSmall = new DecimalFormat("#0");
-    private static DecimalFormat formatBig = new DecimalFormat("#,##0");
+    public static DecimalFormat formatSmall = new DecimalFormat("#0");
+    public static DecimalFormat formatBig = new DecimalFormat("#,##0");
 
     public static String formatNumberExample(Long numValue) {
         int value = (int) Math.floor(Math.log10(numValue));
@@ -100,7 +105,11 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
         public void onClick(View view) {
             VideoData videoData = (VideoData) videoThumbnail.getTag(R.string.tag_video_data);
             if (videoData != null) {
-                TabHomeFragment.playVideoInFragment(videoData.getId());
+                TabHomeFragment tabHomeFragment = weakFragment.get();
+                if (tabHomeFragment != null) {
+                    tabHomeFragment.playVideoInFragment(videoData);
+
+                }
             }
         }
 

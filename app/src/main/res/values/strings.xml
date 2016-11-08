@@ -68,6 +68,13 @@
     <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
     <string name="hint_search">Search video title...</string>
     <string name="view_count_formatter">%1$s views</string>
+    <string name="playlist_count_formatter">%1$d videos</string>
+
     <string name="tag_video_data">tagVideoData</string>
+    <string name="dialog_add">Add this video</string>
+    <string name="dialog_new_playlist">Create new playlist</string>
+    <string name="dialog_pl_hint">Name of Playlist</string>
+    <string name="createAdd">OK</string>
+    <string name="cancel">CANCEL</string>
 
 </resources>

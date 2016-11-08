@@ -15,6 +15,7 @@
             android:id="@+id/video_view_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textSize="10sp"
             android:maxLines="1"
             android:textColor="@android:color/white"/>

@@ -11,7 +11,14 @@
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:editTextColor">@android:color/white</item>
         <item name="android:textColorHint">@android:color/white</item>
+        <item name="droppyMenuItemTitleStyle">@style/Your.Custom.DroppyMenuItemTitle</item>
 
+
+    </style>
+
+    <style name="Your.Custom.DroppyMenuItemTitle" parent="Droppy.DroppyMenuItemTitle">
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_width">wrap_content</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
