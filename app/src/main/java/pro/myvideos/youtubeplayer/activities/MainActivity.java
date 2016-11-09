@@ -47,10 +47,11 @@ import pro.myvideos.youtubeplayer.fragments.TabHomeFragment;
 import static pro.myvideos.youtubeplayer.adapters.RecyclerAdapterHome.BY;
 import static pro.myvideos.youtubeplayer.adapters.RecyclerAdapterHome.formatNumberExample;
 import static pro.myvideos.youtubeplayer.adapters.RecyclerAdapterHome.viewsFormatter;
+import static pro.myvideos.youtubeplayer.fragments.TabHomeFragment.query;
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,
         YouTubePlayer.OnInitializedListener, YouTubePlayer.OnFullscreenListener, YouTubePlayer.PlayerStateChangeListener
-            ,SearchView.OnSuggestionListener, SearchView.OnQueryTextListener{
+            ,SearchView.OnSuggestionListener, SearchView.OnQueryTextListener, TabLayout.OnTabSelectedListener {
 
     private static final int LOADER_TIME_ID = 0;
 
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         myViewPager.addOnPageChangeListener(this);
         tab0 = tabLayout.getTabAt(0);
         tab1 = tabLayout.getTabAt(1);
+        tabLayout.addOnTabSelectedListener(this);
 
         setSuggestAdapter();
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -343,7 +345,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     @Override
     public void onVideoEnded() {
-        hidePlayer();
+        if (youTubePlayer != null && youTubePlayer.hasNext()) {
+            youTubePlayer.next();
+        } else {
+            hidePlayer();
+        }
     }
 
     @Override
@@ -412,7 +418,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            TabHomeFragment.query = intent.getStringExtra(SearchManager.QUERY);
+            query = intent.getStringExtra(SearchManager.QUERY);
             for (Fragment fragment : getSupportFragmentManager().getFragments()){
                 if (fragment instanceof TabHomeFragment){
                     fragment.getLoaderManager().restartLoader(0, null, (TabHomeFragment)fragment);
@@ -503,4 +509,19 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         }
     };
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        myViewPager.setCurrentItem(tab.equals(tab0) ? 0 : 1);
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
 }
