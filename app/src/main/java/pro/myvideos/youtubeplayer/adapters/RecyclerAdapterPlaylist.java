@@ -2,6 +2,7 @@ package pro.myvideos.youtubeplayer.adapters;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import pro.myvideos.youtubeplayer.R;
 import pro.myvideos.youtubeplayer.activities.MainActivity;
 import pro.myvideos.youtubeplayer.data.Playlist;
 import pro.myvideos.youtubeplayer.data.VideoData;
+import pro.myvideos.youtubeplayer.fragments.DialogDeletePlaylist;
 
 /**
  * Created by B.E.L on 06/11/2016.
@@ -40,6 +42,7 @@ public class RecyclerAdapterPlaylist extends RecyclerView.Adapter<RecyclerAdapte
         Playlist playlist = MainActivity.playlists.get(position);
         holder.playlistCount.setText(String.format(countFormatter, playlist.getVideos().size()));
         holder.playlistTitle.setText(playlist.getPlaylistName());
+        holder.itemView.setTag(playlist);
         int count = 0;
         for (VideoData videoData : playlist.getVideos()){
             ImageView imageView = null;
@@ -90,11 +93,22 @@ public class RecyclerAdapterPlaylist extends RecyclerView.Adapter<RecyclerAdapte
             playlistTitle = (TextView)itemView.findViewById(R.id.playlist_title);
             playlistCount = (TextView)itemView.findViewById(R.id.playlist_count);
             playlistMenu = itemView.findViewById(R.id.playlist_menu);
+            playlistMenu.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-
+            Playlist playlist = (Playlist) itemView.getTag();
+            if (playlist != null) {
+                if (view.equals(playlistMenu)) {
+                    DialogFragment newDialog = new DialogDeletePlaylist();
+                    DialogDeletePlaylist.playlistToDelete = playlist;
+                    newDialog.show(((MainActivity) view.getContext()).getSupportFragmentManager(), "");
+                }else {
+                    ((MainActivity)itemView.getContext()).playList(playlist);
+                }
+            }
         }
 
     }

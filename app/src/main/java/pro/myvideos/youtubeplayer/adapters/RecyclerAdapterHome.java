@@ -11,14 +11,11 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import pro.myvideos.youtubeplayer.R;
+import pro.myvideos.youtubeplayer.activities.MainActivity;
 import pro.myvideos.youtubeplayer.data.VideoData;
-import pro.myvideos.youtubeplayer.fragments.TabHomeFragment;
 
 /**
  * Created by B.E.L on 06/11/2016.
@@ -29,14 +26,11 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
     public static final String BY = "by ";
     public static String viewsFormatter;
     private VideoData[] videos;
-    public SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM d, yyyy", Locale.US);
-    private WeakReference<TabHomeFragment> weakFragment;
 
 
-    public RecyclerAdapterHome(VideoData[] videos,TabHomeFragment tabHomeFragment, Context context) {
+    public RecyclerAdapterHome(VideoData[] videos,Context context) {
         this.videos = videos;
         viewsFormatter = context.getString(R.string.view_count_formatter);
-        weakFragment = new WeakReference<>(tabHomeFragment);
 
     }
 
@@ -99,17 +93,14 @@ public class RecyclerAdapterHome extends RecyclerView.Adapter<RecyclerAdapterHom
             videoPublishAt = (TextView)itemView.findViewById(R.id.video_publish_at);
             like = (TextView)itemView.findViewById(R.id.video_like);
             dislike = (TextView)itemView.findViewById(R.id.video_dislike);
+            itemView.findViewById(R.id.video_btn_hide_details).setVisibility(View.GONE);
         }
 
         @Override
         public void onClick(View view) {
             VideoData videoData = (VideoData) videoThumbnail.getTag(R.string.tag_video_data);
             if (videoData != null) {
-                TabHomeFragment tabHomeFragment = weakFragment.get();
-                if (tabHomeFragment != null) {
-                    tabHomeFragment.playVideoInFragment(videoData);
-
-                }
+                ((MainActivity)view.getContext()).playVideo(videoData);
             }
         }
 

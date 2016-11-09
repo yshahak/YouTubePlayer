@@ -8,11 +8,27 @@
     android:background="@android:color/holo_red_dark"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/video_thumbnail"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        tools:src="@drawable/ic_512"/>
+        android:layout_height="130dp">
+        <ImageView
+            android:id="@+id/video_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            tools:src="@drawable/ic_512"/>
+
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_media_play"/>
+
+
+
+
+    </FrameLayout>
+
 
     <include layout="@layout/video_details"/>
 

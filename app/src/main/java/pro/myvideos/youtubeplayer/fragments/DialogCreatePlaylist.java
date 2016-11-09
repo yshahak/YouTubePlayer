@@ -19,7 +19,7 @@ import pro.myvideos.youtubeplayer.data.VideoData;
  * Created by yshah on 11/7/2016.
  */
 
-public class DialogAddCustomPlaylist extends DialogFragment {
+public class DialogCreatePlaylist extends DialogFragment {
 
     private EditText newPlaylist;
     private View view;

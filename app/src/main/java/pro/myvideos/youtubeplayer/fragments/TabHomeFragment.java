@@ -2,50 +2,33 @@ package pro.myvideos.youtubeplayer.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+import android.widget.ProgressBar;
 
 import pro.myvideos.youtubeplayer.R;
-import pro.myvideos.youtubeplayer.activities.MainActivity;
 import pro.myvideos.youtubeplayer.adapters.RecyclerAdapterHome;
-import pro.myvideos.youtubeplayer.data.DataManager;
 import pro.myvideos.youtubeplayer.data.SearchVideoTask;
 import pro.myvideos.youtubeplayer.data.VideoData;
-
-import static pro.myvideos.youtubeplayer.adapters.RecyclerAdapterHome.BY;
-import static pro.myvideos.youtubeplayer.adapters.RecyclerAdapterHome.formatNumberExample;
-import static pro.myvideos.youtubeplayer.adapters.RecyclerAdapterHome.viewsFormatter;
 
 /**
  * Created by B.E.L on 06/11/2016.
  */
 
-public class TabHomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<VideoData[]> , YouTubePlayer.OnInitializedListener, YouTubePlayer.OnFullscreenListener, YouTubePlayer.PlayerStateChangeListener {
+public class TabHomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<VideoData[]> {
 
     private static final String KEY_IS_PLAYING = "keyIsPlaying";
     private RecyclerView recyclerView;
-    private LinearLayout playerContainer;
-    private YouTubePlayer youTubePlayer;
-    private TextView videoTitle;
-    private TextView videoViewCount;
-    private TextView videoPublisher;
-    private TextView videoPublishAt;
-    private TextView like, dislike;
-    private VideoData playedVideo;
+    private ProgressBar progressBar;
+    public static String query = "";
+
+
 
     public static TabHomeFragment newInstance(){
         return new TabHomeFragment();
@@ -64,60 +47,12 @@ public class TabHomeFragment extends Fragment implements LoaderManager.LoaderCal
         recyclerView = (RecyclerView) viewGroup.findViewById(R.id.recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
-        playerContainer = (LinearLayout)viewGroup.findViewById(R.id.player_container);
-        videoTitle = (TextView)viewGroup.findViewById(R.id.video_title);
-        videoViewCount = (TextView)viewGroup.findViewById(R.id.video_view_count);
-        videoPublisher = (TextView)viewGroup.findViewById(R.id.video_publisher);
-        videoPublishAt = (TextView)viewGroup.findViewById(R.id.video_publish_at);
-        like = (TextView)viewGroup.findViewById(R.id.video_like);
-        dislike = (TextView)viewGroup.findViewById(R.id.video_dislike);
+        progressBar = (ProgressBar)viewGroup.findViewById(R.id.progress_bar);
         getLoaderManager().initLoader(0, null, TabHomeFragment.this);
-
-        YouTubePlayerSupportFragment youTubePlayerFragment =
-                (YouTubePlayerSupportFragment) getChildFragmentManager().findFragmentById(R.id.youtube_fragment);
-        youTubePlayerFragment.initialize(DataManager.YOUTUBE_DATA_API_KEY, this);
-        View iconPlaylist = viewGroup.findViewById(R.id.icon_playlist);
-        iconPlaylist.setOnClickListener(playlistClickListener);
         return viewGroup;
     }
 
-    public void hidePlayer(){
-        if (youTubePlayer != null) {
-            playerContainer.setVisibility(View.GONE);
-        }
-    }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(KEY_IS_PLAYING, youTubePlayer != null && youTubePlayer.isPlaying());
-    }
-
-    public void playVideoInFragment(VideoData videoData){
-        this.playedVideo = videoData;
-        if (youTubePlayer != null) {
-            youTubePlayer.loadVideo(videoData.getId());
-            playerContainer.setVisibility(View.VISIBLE);
-            videoTitle.setText(videoData.getTitle());
-            videoViewCount.setText(String.format(viewsFormatter, videoData.getCountViews()));
-            videoPublishAt.setText(videoData.getPublished().substring(0, 10));
-            videoPublisher.setText(BY + videoData.getChannelTitle());
-            like.setText(formatNumberExample(videoData.getLikes()));
-            dislike.setText(formatNumberExample(videoData.getDislikes()));
-//            ((MainActivity)getActivity()).hideBars();
-        }
-
-    }
-
-
-    private View.OnClickListener playlistClickListener= new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            DialogFragment dialog = new DialogAdd();
-            DialogAdd.playedVideo = playedVideo;
-            dialog.show(getActivity().getSupportFragmentManager(), "");
-        }
-    };
 
     @Override
     public void onDestroyView() {
@@ -126,14 +61,16 @@ public class TabHomeFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public Loader<VideoData[]> onCreateLoader(int id, Bundle args) {
-        return  new SearchVideoTask(getActivity(), "");
+        progressBar.setVisibility(View.VISIBLE);
+        return new SearchVideoTask(getActivity(), query);
     }
 
     @Override
     public void onLoadFinished(Loader<VideoData[]> loader, VideoData[] data) {
         if (data != null && isAdded()) {
-            recyclerView.setAdapter(new RecyclerAdapterHome(data, TabHomeFragment.this, getContext()));
+            recyclerView.setAdapter(new RecyclerAdapterHome(data, getContext()));
         }
+        progressBar.setVisibility(View.GONE);
     }
 
 
@@ -142,56 +79,6 @@ public class TabHomeFragment extends Fragment implements LoaderManager.LoaderCal
 
     }
 
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
-        youTubePlayer = player;
-        player.setOnFullscreenListener(this);
-        player.setPlayerStateChangeListener(this);
-        Log.d("TAG", "onInitializationSuccess: " + wasRestored);
-    }
 
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-        youTubePlayer = null;
-    }
 
-    @Override
-    public void onFullscreen(boolean fullScreen) {
-
-        Log.d("TAG", "onFullscreen: " + fullScreen);
-        if (youTubePlayer != null) {
-            youTubePlayer.play();
-        }
-    }
-
-    @Override
-    public void onLoading() {
-
-    }
-
-    @Override
-    public void onLoaded(String s) {
-
-    }
-
-    @Override
-    public void onAdStarted() {
-
-    }
-
-    @Override
-    public void onVideoStarted() {
-
-    }
-
-    @Override
-    public void onVideoEnded() {
-        hidePlayer();
-        ((MainActivity)getActivity()).hideBars();
-    }
-
-    @Override
-    public void onError(YouTubePlayer.ErrorReason errorReason) {
-
-    }
 }

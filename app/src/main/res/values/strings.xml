@@ -76,5 +76,16 @@
     <string name="dialog_pl_hint">Name of Playlist</string>
     <string name="createAdd">OK</string>
     <string name="cancel">CANCEL</string>
+    <string name="action_search">Search…</string>
+    <string name="delete_playlist">DELETE PLAYLIST</string>
+    <string name="action_about">About</string>
+    <string name="action_rate">Rate us</string>
+    <string name="action_more_apps">More apps</string>
+    <string name="action_share">Share us</string>
+    <string name="rate_url">market://details?id=</string>
+    <string name="share_app_msg">YouTube Player - </string>
+    <string name="share">Share:</string>
+    <string name="about">Youtube Player is tiny and simple app, created to help you watch your beloved content on YouTube</string>
+
 
 </resources>

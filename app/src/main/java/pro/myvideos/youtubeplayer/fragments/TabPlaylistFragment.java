@@ -37,8 +37,8 @@ public class TabPlaylistFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        DialogFragment newDialog = new DialogAddCustomPlaylist();
-        DialogAddCustomPlaylist.playedVideo = null;
+        DialogFragment newDialog = new DialogCreatePlaylist();
+        DialogCreatePlaylist.playedVideo = null;
         newDialog.show(getFragmentManager(), "");
     }
 }

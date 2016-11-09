@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_about"
+        android:title="@string/action_about" />
+
+    <item
+        android:id="@+id/action_share"
+        android:title="@string/action_share"/>
+
+    <item
+        android:id="@+id/action_Rate"
+        android:title="@string/action_rate"/>
+
+    <item android:id="@+id/action_more_apps"
+          android:title="@string/action_more_apps"/>
+
+</menu>

@@ -25,7 +25,7 @@ import pro.myvideos.youtubeplayer.data.VideoData;
  * Created by yshah on 11/7/2016.
  */
 
-public class DialogAdd extends DialogFragment {
+public class DialogAddToPlaylist extends DialogFragment {
 
     private static final int ITEM_NEW_PLAYLIST = 0;
     private static final int ITEM_ELSE = 1;
@@ -47,8 +47,8 @@ public class DialogAdd extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case ITEM_NEW_PLAYLIST:
-                                DialogFragment newDialog = new DialogAddCustomPlaylist();
-                                DialogAddCustomPlaylist.playedVideo = playedVideo;
+                                DialogFragment newDialog = new DialogCreatePlaylist();
+                                DialogCreatePlaylist.playedVideo = playedVideo;
                                 newDialog.show(getFragmentManager(), "");
                                 break;
                             default:
