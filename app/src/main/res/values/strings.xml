@@ -16,7 +16,6 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">YouTube Player</string>
-    <string name="title_activity_main">MainActivity</string>
     <string name="youtube_api_demo">YouTube API Demos</string>
 
     <string name="videowall_demo_name">Video Wall</string>

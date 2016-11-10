@@ -1,5 +1,8 @@
 package pro.myvideos.youtubeplayer.data;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -12,6 +15,7 @@ import java.util.HashMap;
 import java.util.regex.Pattern;
 
 public class Helper {
+    public static final String YOUTUBE_DATA_API_KEY = "AIzaSyAH0Y0Rfd5Pb9pZoBeFmM_sGRcyVUAGXPQ";
 
     private static HashMap<String, String> regexMap = new HashMap<String, String>();
 
@@ -112,6 +116,16 @@ public class Helper {
         //MyLogger.log("ZAQ-Helper", "Views: " + views + "    result: " + result);
         return result;
     }
+    public static boolean isNetworkAvailable(Context context) {
+        try {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 
 
 }

@@ -36,7 +36,7 @@ import java.util.List;
 
 import pro.myvideos.youtubeplayer.R;
 import pro.myvideos.youtubeplayer.adapters.CustomPagerAdapter;
-import pro.myvideos.youtubeplayer.data.DataManager;
+import pro.myvideos.youtubeplayer.data.Helper;
 import pro.myvideos.youtubeplayer.data.Playlist;
 import pro.myvideos.youtubeplayer.data.SearchSuggestTask;
 import pro.myvideos.youtubeplayer.data.VideoData;
@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private void initialize(){
         YouTubePlayerSupportFragment youTubePlayerFragment =
                 (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtube_fragment);
-        youTubePlayerFragment.initialize(DataManager.YOUTUBE_DATA_API_KEY, this);
+        youTubePlayerFragment.initialize(Helper.YOUTUBE_DATA_API_KEY, this);
 
     }
 

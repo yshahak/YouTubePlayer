@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import pro.myvideos.youtubeplayer.R;
 import pro.myvideos.youtubeplayer.adapters.RecyclerAdapterHome;
+import pro.myvideos.youtubeplayer.data.Helper;
 import pro.myvideos.youtubeplayer.data.SearchVideoTask;
 import pro.myvideos.youtubeplayer.data.VideoData;
 
@@ -48,7 +50,23 @@ public class TabHomeFragment extends Fragment implements LoaderManager.LoaderCal
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         progressBar = (ProgressBar)viewGroup.findViewById(R.id.progress_bar);
-        getLoaderManager().initLoader(0, null, TabHomeFragment.this);
+        if (Helper.isNetworkAvailable(getContext())) {
+            getLoaderManager().initLoader(0, null, TabHomeFragment.this);
+        } else {
+            final ViewGroup cont = (ViewGroup) viewGroup.findViewById(R.id.no_internet_contaoner);
+            cont.setVisibility(View.VISIBLE);
+            cont.findViewById(R.id.btn_refresh).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (Helper.isNetworkAvailable(getContext())) {
+                        getLoaderManager().initLoader(0, null, TabHomeFragment.this);
+                        cont.setVisibility(View.GONE);
+                    } else {
+                        Toast.makeText(getContext() ,"There is no internet access", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
         return viewGroup;
     }
 

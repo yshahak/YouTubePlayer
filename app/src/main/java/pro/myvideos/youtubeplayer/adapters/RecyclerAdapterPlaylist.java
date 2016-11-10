@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -106,7 +107,11 @@ public class RecyclerAdapterPlaylist extends RecyclerView.Adapter<RecyclerAdapte
                     DialogDeletePlaylist.playlistToDelete = playlist;
                     newDialog.show(((MainActivity) view.getContext()).getSupportFragmentManager(), "");
                 }else {
-                    ((MainActivity)itemView.getContext()).playList(playlist);
+                    if (playlist.getVideos().size() > 0) {
+                        ((MainActivity) itemView.getContext()).playList(playlist);
+                    } else {
+                        Toast.makeText(itemView.getContext() ,"There is no videos in this playlist", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         }

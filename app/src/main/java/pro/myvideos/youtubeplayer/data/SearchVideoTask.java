@@ -13,7 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static android.R.attr.type;
-import static pro.myvideos.youtubeplayer.data.DataManager.YOUTUBE_DATA_API_KEY;
+import static pro.myvideos.youtubeplayer.data.Helper.YOUTUBE_DATA_API_KEY;
 
 public class SearchVideoTask extends AsyncTaskLoader<VideoData[]> {
 
