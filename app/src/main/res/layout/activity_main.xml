@@ -21,13 +21,6 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:layout_scrollFlags="scroll|enterAlways">
 
-           <!-- <ImageView
-                android:id="@+id/btn_drop_down"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                app:srcCompat="@drawable/menu_btn"/>-->
-
 
             <TextView
                 android:id="@+id/tool_bar_title"

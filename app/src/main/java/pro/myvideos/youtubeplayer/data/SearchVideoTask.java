@@ -164,8 +164,12 @@ public class SearchVideoTask extends AsyncTaskLoader<VideoData[]> {
                 JSONObject statisticsJsonObj = itemsJsonArr.getJSONObject(i).getJSONObject("statistics");
                 videoData[i].setLength(contentDetailsJsonObj.getString("duration"));
                 videoData[i].setCountViews(statisticsJsonObj.getString("viewCount"));
-                videoData[i].setLikes(statisticsJsonObj.getLong("likeCount"));
-                videoData[i].setDislikes(statisticsJsonObj.getLong("dislikeCount"));
+                if (statisticsJsonObj.has("likeCount")) {
+                    videoData[i].setLikes(statisticsJsonObj.getLong("likeCount"));
+                }
+                if (statisticsJsonObj.has("dislikeCount")) {
+                    videoData[i].setDislikes(statisticsJsonObj.getLong("dislikeCount"));
+                }
             }
         } catch (MalformedURLException e) {
             Log.e("my", "MalformedURLException Error " + e.toString(), e);
