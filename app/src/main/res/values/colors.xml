@@ -18,5 +18,5 @@
     <color name="gray">#ff888888</color>
     <color name="colorPrimary">#a20000</color>
     <color name="colorPrimaryDark">#BBa20000</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">@android:color/black</color>
 </resources>
